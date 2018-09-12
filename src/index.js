@@ -6,4 +6,8 @@ export default function lift(...staticPaths) {
       this.app.use(koaStatic(path));
     }
   });
+
+  if (this.config.paths && this.config.paths.public) {
+    this.app.use(koaStatic(this.config.paths.public));
+  }
 }
