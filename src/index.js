@@ -1,4 +1,5 @@
 import koaStatic from 'koa-static';
+import { resolve as pathResolve } from 'path';
 
 export default function lift(...staticPaths) {
   staticPaths.forEach((path) => {
@@ -8,6 +9,7 @@ export default function lift(...staticPaths) {
   });
 
   if (this.config.paths && this.config.paths.public) {
-    this.app.use(koaStatic(this.config.paths.public));
+    let path = pathResolve(this.projectPath, this.config.paths.public);
+    this.app.use(koaStatic(path));
   }
 }
