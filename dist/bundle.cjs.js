@@ -14,7 +14,7 @@ function lift(...staticPaths) {
 
   if (this.config.paths && this.config.paths.public) {
     let path$$1 = path.resolve(this.projectPath, this.config.paths.public);
-    this.app.use(koaStatic(path$$1));
+    this.app.use(koaStatic(path$$1, this.config.paths.opts));
   }
 }
 
