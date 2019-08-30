@@ -12,22 +12,35 @@ function lift(...staticPaths) {
     }
   });
 
-  if (this.config.paths) {
-    let arr = this.config.paths;
+  if (!this.config.paths) {
+    return;
+  }
 
-    if (!Array.isArray(this.config.paths)) {
-      arr = [this.config.paths];
-    }
+  let arr = [];
 
-    arr.forEach(item => {
-      if (!item || !item.public) {
-        return;
-      }
-
-      let path$$1 = path.resolve(this.projectPath, item.public);
-      this.app.use(koaStatic(path$$1, item.opts));
+  if (this.config.paths.public) {
+    arr.push({
+      root: this.config.paths.public,
+      opts: this.config.paths.opts
     });
   }
+
+  if (this.config.paths.static) {
+    if (!Array.isArray(this.config.paths.static)) {
+      arr.push(this.config.paths.static);
+    } else {
+      arr.push(...this.config.paths.static);
+    }
+  }
+
+  arr.forEach(item => {
+    if (!item || !item.root) {
+      return;
+    }
+
+    let path$$1 = path.resolve(this.projectPath, item.root);
+    this.app.use(koaStatic(path$$1, item.opts));
+  });
 }
 
 module.exports = lift;
