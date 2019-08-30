@@ -8,8 +8,19 @@ export default function lift(...staticPaths) {
     }
   });
 
-  if (this.config.paths && this.config.paths.public) {
-    let path = pathResolve(this.projectPath, this.config.paths.public);
-    this.app.use(koaStatic(path, this.config.paths.opts));
+  if (this.config.paths) {
+    let arr = this.config.paths;
+    if (!Array.isArray(this.config.paths)) {
+      arr = [this.config.paths];
+    }
+
+    arr.forEach((item) => {
+      if (!item || !item.public) {
+        return;
+      }
+
+      let path = pathResolve(this.projectPath, item.public);
+      this.app.use(koaStatic(path, item.opts));
+    });
   }
 }
